@@ -15,7 +15,7 @@ namespace EmbedExtractor
             var fileName = args.FirstOrDefault();
             if (fileName == null) return;
 
-            Log.OnLogEvent += Log_OnLogEvent;
+            Log.LoggedMainEvent += Log_LoggedMainEvent;
 
             var gbx = GameBox.Parse(fileName);
 
@@ -23,7 +23,7 @@ namespace EmbedExtractor
                 gbxMap.MainNode.ExportEmbedZip(gbxMap.FileName + ".zip");
         }
 
-        private static void Log_OnLogEvent(string text, ConsoleColor color)
+        private static void Log_LoggedMainEvent(string text, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.WriteLine(text);

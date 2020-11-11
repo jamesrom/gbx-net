@@ -171,8 +171,6 @@ namespace IslandConverter
             var outputFileBase = $"{outputFolder}/{Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(fileName))}.Map.Gbx";
             var logFileBase = $"log/{Path.GetFileNameWithoutExtension(Path.GetFileNameWithoutExtension(fileName))}.Map.Gbx";
 
-            Log.Start(logFileBase + ".log");
-
             var map = gbx.MainNode;
 
             Log.Write("Converting decoration...");
@@ -265,7 +263,7 @@ namespace IslandConverter
                         {
                             if (conversion != null)
                             {
-                                var variant = conversion.ElementAtOrDefault(block.Variant);
+                                var variant = conversion.ElementAtOrDefault(block.Variant.Value);
                                 if (variant != null)
                                 {
                                     if (variant.Ground != null)
@@ -509,7 +507,7 @@ namespace IslandConverter
                 {
                     if (conversion != null)
                     {
-                        var variant = conversion.ElementAtOrDefault(block.Variant);
+                        var variant = conversion.ElementAtOrDefault(block.Variant.Value);
 
                         if (variant != null)
                         {
@@ -722,7 +720,7 @@ namespace IslandConverter
             Log.Write($"Map saved! (in {(DateTime.Now - startMapSave).TotalMilliseconds}ms)");
 
             Directory.CreateDirectory("log");
-            Log.End(logFileBase + ".log");
+            Log.Save(logFileBase + ".log");
         }
     }
 }

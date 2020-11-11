@@ -57,7 +57,7 @@ namespace IslandConverter
             }
             else
             {
-                Log.OnLogEvent += LogConsoleMode;
+                Log.LoggedMainEvent += LogConsoleMode;
 
                 Console.Title = $"Island Converter {version}";
 

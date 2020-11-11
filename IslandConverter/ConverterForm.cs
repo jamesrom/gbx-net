@@ -28,7 +28,7 @@ namespace IslandConverter
 
             UpdateSelectedMap();
 
-            Log.OnLogEvent += Log_OnLogEvent;
+            Log.LoggedMainEvent += Log_LoggedMainEvent;
 
             ilThumbnails.Images.Add("Loading", Resources.Loading);
 
@@ -48,7 +48,7 @@ namespace IslandConverter
             new ConverterAboutBox().ShowDialog();
         }
 
-        private void Log_OnLogEvent(string text, ConsoleColor color)
+        private void Log_LoggedMainEvent(string text, ConsoleColor color)
         {
             Invoke(new Action(() =>
             {
