@@ -11,12 +11,12 @@ namespace GBX.NET.Engines.Game
 {
     public class CGameGhostData
     {
-        private TimeSpan samplePeriod;
+        private TimeSpan? samplePeriod;
 
         /// <summary>
         /// How much time is between each sample.
         /// </summary>
-        public TimeSpan SamplePeriod
+        public TimeSpan? SamplePeriod
         {
             get => samplePeriod;
             set
@@ -198,9 +198,9 @@ namespace GBX.NET.Engines.Game
         /// or <see cref="SamplePeriod"/> is lower or equal to 0.</returns>
         public Sample GetSampleLerp(TimeSpan timestamp)
         {
-            if (Samples?.Count > 0 && samplePeriod.Ticks > 0)
+            if (Samples?.Count > 0 && samplePeriod.HasValue && samplePeriod.Value.Ticks > 0)
             {
-                var sampleKey = timestamp.TotalMilliseconds / samplePeriod.TotalMilliseconds;
+                var sampleKey = timestamp.TotalMilliseconds / samplePeriod.Value.TotalMilliseconds;
                 var a = Samples.ElementAtOrDefault((int)Math.Floor(sampleKey)); // Sample A
                 var b = Samples.ElementAtOrDefault((int)Math.Ceiling(sampleKey)); // Sample B
 
@@ -242,7 +242,7 @@ namespace GBX.NET.Engines.Game
             {
                 owner = ghostData;
 
-                if (owner == null || owner.samplePeriod == null || owner.samplePeriod.TotalMilliseconds <= 0)
+                if (owner == null || !owner.samplePeriod.HasValue || owner.samplePeriod.Value.TotalMilliseconds <= 0)
                 {
                     Timestamp = null;
                     return;
@@ -253,7 +253,10 @@ namespace GBX.NET.Engines.Game
 
             internal void UpdateTimestamp()
             {
-                Timestamp = TimeSpan.FromMilliseconds(owner.samplePeriod.TotalMilliseconds * owner.Samples.IndexOf(this));
+                if (owner.samplePeriod.HasValue)
+                    Timestamp = TimeSpan.FromMilliseconds(owner.samplePeriod.Value.TotalMilliseconds * owner.Samples.IndexOf(this));
+                else
+                    Timestamp = null;
             }
 
             public override string ToString()
